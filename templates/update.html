@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/update.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a href="/tour">Tour</a>
+        <a class="active" href="/login">Adminstration</a>
+        <img src="../static/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <h2 id="title">Update</h2>
+        <h3 id="subtext">Choose to update an existing location</h3>
+        <div id="container">
+            <form action="/update" method="post" enctype="multipart/form-data">
+                <div id="formDiv">
+                    <label>Name: </label>
+                    <select name="name" id="select">
+                         {% for name in names %}
+                         <option value={{name[0]}}>{{name[1]}}</option>
+                         {% endfor %}
+                    </select> 
+                </div>
+                <div id="formDiv">
+                    <textarea name="description" cols="40" rows="5" placeholder="Location Description"></textarea>
+                </div>
+                <div id="formDiv">
+                    <label>Image: </label>
+                    <input type="file" name="image">
+                </div>
+                <div id="formDiv">
+                    <label>Exit Points: </label>
+                     <select name="exitPoint" id="select">
+                         <option value="NULL">No new exit</option>
+                         {% for exit in exits %}
+                         <option value={{exit[0]}}>{{exit[1]}}</option>
+                         {% endfor %}
+                    </select> 
+                </div>
+                <div id="formDiv">
+                    <button id="updateBtn" type="submit" accept="image/png, image/jpeg">Add</button>
+                </div>
+            </form>
+            <h3 id="failedMsg" {{failed}}>Updating failed, please check the inputs and try again.</h3>
+            <h3 id="successMsg" {{success}}>Data has been updated successfully.</h3>
+        </div>
+    </div>
+        
+</body>

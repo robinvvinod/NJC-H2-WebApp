@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/delete.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a href="/tour">Tour</a>
+        <a class="active" href="/login">Adminstration</a>
+        <img src="../static/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <h2 id="title">Delete</h2>
+        <h3 id="subtext">Choose to delete an existing location</h3>
+        <div id="container">
+            <form action="/delete" method="post" enctype="multipart/form-data">
+                <div id="formDiv">
+                    <label>Name: </label>
+                    <select name="name" id="select">
+                         {% for name in names %}
+                         <option value={{name[0]}}>{{name[1]}}</option>
+                         {% endfor %}
+                    </select> 
+                </div>
+                <div id="formDiv">
+                    <button id="deleteBtn" type="submit" accept="image/png, image/jpeg">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+</body>

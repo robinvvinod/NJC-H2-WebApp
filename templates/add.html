@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/add.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a href="/tour">Tour</a>
+        <a class="active" href="/login">Adminstration</a>
+        <img src="../static/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <h2 id="title">Add a new location</h2>
+        <h3 id="subtext">Please enter the details of the new location.</h3>
+        <div id="container">
+            <form action="/add" method="post" enctype="multipart/form-data">
+                <div id="formDiv">
+                    <input type="text" name="name" placeholder="Location Name">
+                </div>
+                <div id="formDiv">
+                    <textarea name="description" cols="40" rows="5" placeholder="Location Description"></textarea>
+                </div>
+                <div id="formDiv">
+                    <label>Image: </label>
+                    <input type="file" name="image">
+                </div>
+                <div id="formDiv">
+                    <label>Exit Points: </label>
+                     <select name="exitPoint" id="select">
+                         <option value="NULL">No Exit</option>
+                         {% for exit in exits %}
+                         <option value={{exit[0]}}>{{exit[1]}}</option>
+                         {% endfor %}
+                    </select> 
+                </div>
+                <div id="formDiv">
+                    <button id="add" type="submit" accept="image/png, image/jpeg">Add</button>
+                </div>
+            </form>
+            <h3 id="failedMsg" {{failed}}>Adding failed, please check the inputs and try again.</h3>
+            <h3 id="successMsg" {{success}}>New data has been added successfully.</h3>
+        </div>
+    </div>
+        
+</body>

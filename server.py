@@ -27,7 +27,8 @@ def location():
     placeID = placeID[0]
     
     con = open_DB("Database.db")
-    currentLoc = con.execute('''SELECT Name,Description,Image FROM Location WHERE PlaceID = ''' + str(placeID))
+    currentLoc = con.execute('''SELECT Name,Description,Image FROM Location WHERE PlaceID = "''' + str(placeID) +
+    '''"''')
     place = currentLoc.fetchone()
     placeName = place[0]
     placeDesc = place[1]
@@ -61,13 +62,162 @@ def login():
             con.close()
             if userInfo != None:
                 if password == userInfo[0]:
-                    return redirect("/update")
+                    return redirect("/selector")
+                else:
+                    return render_template("login.html", failed="")
+            else:
+                return render_template("login.html", failed="")
+        else:
+            return render_template("login.html", failed="")
 
-    return render_template("login.html")
+    return render_template("login.html", failed="hidden")
+
+@app.route('/selector', methods = ['GET'])
+def selector():
+    return render_template('selector.html')
+
+@app.route('/add', methods = ['POST','GET'])
+def add():
+    
+    exitList = []
+    con = open_DB("Database.db")
+    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
+    exitL = selectCur.fetchall()
+    con.close()
+
+    for exit in exitL:
+        exitList.append([exit[0], exit[1]])
+
+    if "name" in request.form:
+        name = request.form["name"]
+        desc = request.form["description"]
+        addExit = request.form["exitPoint"]
+        newPlaceID = hashlib.sha256(name.encode('utf-8')).hexdigest()
+
+        if name != "" and desc != "":
+            if "image" in request.files:
+                image = request.files["image"]
+                image_path = image.filename
+    
+                con = open_DB("Database.db")
+                con.execute('''INSERT INTO Location (PlaceID, Name, Description, Image) VALUES
+                (?,?,?,?)''', (newPlaceID, name, desc, image_path))
+                con.commit()
+                con.close()
+            else:
+                con = open_DB("Database.db")
+                con.execute('''INSERT INTO Location (PlaceID, Name, Description, Image) VALUES
+                (?,?,?,?)''', (newPlaceID, name, desc, None))
+                con.commit()
+                con.close()
+                
+            if addExit != "NULL":
+                con = open_DB("Database.db")
+                con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES
+                (?,?)''', (newPlaceID, addExit))
+                con.commit()
+                con.close()
+
+            return render_template('add.html', exits=exitList, failed="hidden", success="")
+
+        else:
+            return render_template('add.html', exits=exitList, failed="", success="hidden")
+        
+    return render_template('add.html', exits=exitList, failed="hidden", success="hidden")
 
 @app.route('/update', methods = ['POST','GET'])
 def update():
-    return render_template('update.html')
+    
+    exitList = []
+    con = open_DB("Database.db")
+    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
+    exitL = selectCur.fetchall()
+    con.close()
+
+    nameList = []
+    con = open_DB("Database.db")
+    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
+    nameL = selectCur.fetchall()
+    con.close()
+
+    for exit in exitL:
+        exitList.append([exit[0], exit[1]])
+
+    for name in nameL:
+        nameList.append([name[0], name[1]])
+
+    if "description" in request.form:
+        placeID = request.form["name"]
+        desc = request.form["description"]
+        addExit = request.form["exitPoint"]
+
+        if desc != "":
+
+            if addExit != "NULL":
+                con = open_DB("Database.db")
+                checkCur = con.execute('''SELECT ExitPointID FROM Exit WHERE PlaceID = ?''', (placeID,))
+                check = checkCur.fetchall()
+                con.close()
+                
+                for item in check:
+                    if item[0] == addExit:
+                        return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+
+                if placeID == addExit:
+                    return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+
+                con = open_DB("Database.db")
+                con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES
+                (?,?)''', (placeID, addExit))
+                con.commit()
+                con.close()
+
+            if "image" in request.files:
+                image = request.files["image"]
+                image_path = image.filename
+    
+                con = open_DB("Database.db")
+                con.execute('''UPDATE Location SET Description = ?, Image = ? WHERE PlaceID =
+                        ?''', (desc, image_path, placeID))
+                con.commit()
+                con.close()
+            else:
+                con = open_DB("Database.db")
+                con.execute('''UPDATE Location SET Description = ?, Image = ? WHERE PlaceID =
+                        ?''', (desc, None, placeID))
+                con.commit()
+                con.close()
+                            
+            return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="")
+
+        else:
+            return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+        
+    return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="hidden")
+
+@app.route('/delete', methods = ['POST','GET'])
+def delete():
+
+    nameList = []
+    con = open_DB("Database.db")
+    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
+    nameL = selectCur.fetchall()
+    con.close()
+
+    for name in nameL:
+        nameList.append([name[0], name[1]])
+
+    if "name" in request.form:
+        placeID = request.form["name"]
+        con = open_DB("Database.db")
+        con.execute('''DELETE FROM Exit WHERE PlaceID = ? OR ExitPointID = ?''', (placeID,placeID))
+        con.execute('''DELETE FROM Location WHERE PlaceID = ?''', (placeID,))
+        con.commit()
+        con.close()
+
+        return redirect('/delete')
+
+    return render_template('delete.html', names=nameList)
 
 if __name__ == '__main__':
     app.run()
