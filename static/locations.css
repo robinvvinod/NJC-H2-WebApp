@@ -1,0 +1,119 @@
+body {
+    background-image: url(njcbg.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-color: grey;
+}
+
+.topNav {
+    background-color: #374787;
+    overflow: hidden;
+    height: 46px;
+    border-radius: 4px;
+}
+
+.topNav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 14px; 
+    padding-right: 16px;
+    padding-left: 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: "Verdana";
+}
+
+.topNav a:hover {
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.topNav a.active {
+    background-color: #F76C6C;
+    color: white;
+}
+
+.topNav img {
+    width: 46px;
+    height: 46px;
+    float: right;
+}
+
+.infoBox {
+    margin: 0 auto;
+    width: 700px;
+    min-height: 500px;
+    background: rgba(55,71,135,0.8);
+    border-radius: 4px;
+    
+}
+
+.infoBox #title {
+    text-align: center;
+    color: white;
+    font-family: "Verdana";
+    font-size: 21px;
+    padding-top: 15px;
+}
+
+.infoBox #subtext {
+    text-align: center;
+    color: white;
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-family: "Verdana";
+    font-size: 14px;
+}
+
+
+.infoBox #locationImage {
+    width: 600px;
+    height: 350px;
+    display: block;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+.infoBox #container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+.infoBox #container h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: "Verdana";
+    font-size: 14px;
+}
+
+.infoBox #controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 30px;
+    color: white;
+    font-family: "Verdana";
+    font-size: 12px;
+    text-align: center;
+    background-color: #F76C6C;
+    border: none;
+    margin: 3px auto;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.infoBox #controls:hover {
+    background-color: white;
+    color: #F76C6C;
+    border-style: none;
+}

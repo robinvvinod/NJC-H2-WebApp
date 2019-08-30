@@ -1,0 +1,112 @@
+body {
+    background-image: url(njcbg.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-color: grey;
+}
+
+.topNav {
+    background-color: #374787;
+    overflow: hidden;
+    height: 46px;
+    border-radius: 4px;
+}
+
+.topNav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 14px; 
+    padding-right: 16px;
+    padding-left: 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: "Verdana";
+}
+
+.topNav a:hover {
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.topNav a.active {
+    background-color: #F76C6C;
+    color: white;
+}
+
+.topNav img {
+    width: 46px;
+    height: 46px;
+    float: right;
+}
+
+.infoBox {
+    margin: auto;
+    position: absolute;
+    top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+    width: 700px;
+    height: 425px;
+    background-color: #374787;
+    opacity: 0.8;
+    border-radius: 4px;
+}
+
+.infoBox #title {
+    text-align: center;
+    color: white;
+    font-family: "Verdana";
+    font-size: 21px;
+}
+
+.infoBox #subtext {
+    text-align: center;
+    color: white;
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-family: "Verdana";
+    font-size: 14px;
+}
+
+.infoBox form {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+.infoBox #locations {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    color: white;
+    font-family: "Verdana";
+    font-size: 12px;
+    text-align: center;
+    background-color: #F76C6C;
+    border: none;
+    margin: auto;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.infoBox #locations:hover {
+    background-color: white;
+    color: #F76C6C;
+    border-style: none;
+}
+
+#map {
+    display: flex;
+    width: 300px;
+    height: 200px;
+    margin: auto;
+    padding-top: 15px;
+}

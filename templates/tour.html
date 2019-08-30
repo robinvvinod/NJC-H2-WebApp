@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/tour.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a class="active" href="/tour">Tour</a>
+        <a href="/login">Adminstration</a>
+        <img src="../static/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <h2 id="title">Let us know where you are</h2>
+        <h3 id="subtext">To begin, select the location where you are entering the school from. The areas covered in the tour will vary based on your selection.</h3>
+        <div id="container">
+            <form action="/tour-start" method="post">
+                <input type="submit" value="Side Gate" name="8833803588771307425" id="locations"/>
+                <input type="submit" value="Front Gate" name="1748954915324104539" id="locations"/>
+            </form>
+        </div>
+        <img src="../static/njcmap.jpg" alt="NJC Map" id="map">
+    </div>
+        
+</body>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/locations.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a class="active" href="/tour">Tour</a>
+        <a href="/login">Adminstration</a>
+        <img src="../static/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <h2 id="title">{{name}}</h2>
+        <h3 id="subtext">{{description}}</h3>
+        <img id="locationImage" src="../static/{{image}}" alt="Image of location">
+        <div id="container">
+            <h3>Exit Points:</h3>
+            <form action="/tour-start" method="post">
+                {% for place in exits %}
+                <input type="submit" value="{{place[1]}}" name="{{place[0]}}" id="controls" />
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+        
+</body>
