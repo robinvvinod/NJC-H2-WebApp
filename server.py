@@ -93,17 +93,21 @@ def add():
         desc = request.form["description"]
         addExit = request.form["exitPoint"]
         newPlaceID = hashlib.sha256(name.encode('utf-8')).hexdigest()
+        image = request.files["image"]
+        image_path = image.filename
 
         if name != "" and desc != "":
-            if "image" in request.files:
-                image = request.files["image"]
-                image_path = image.filename
-    
+            if image_path != "":
                 con = open_DB("Database.db")
                 con.execute('''INSERT INTO Location (PlaceID, Name, Description, Image) VALUES
                 (?,?,?,?)''', (newPlaceID, name, desc, image_path))
                 con.commit()
                 con.close()
+                try:
+                    image.save("static/images/"+image_path)
+                except:
+                    return render_template('add.html', exits=exitList, failed="", success="hidden")
+
             else:
                 con = open_DB("Database.db")
                 con.execute('''INSERT INTO Location (PlaceID, Name, Description, Image) VALUES
@@ -146,52 +150,48 @@ def update():
     for name in nameL:
         nameList.append([name[0], name[1]])
 
-    if "description" in request.form:
+    if "name" in request.form:
         placeID = request.form["name"]
         desc = request.form["description"]
         addExit = request.form["exitPoint"]
+        image = request.files["image"]
+        image_path = image.filename
 
-        if desc != "":
-
-            if addExit != "NULL":
-                con = open_DB("Database.db")
-                checkCur = con.execute('''SELECT ExitPointID FROM Exit WHERE PlaceID = ?''', (placeID,))
-                check = checkCur.fetchall()
-                con.close()
+        if addExit != "NULL":
+            con = open_DB("Database.db")
+            checkCur = con.execute('''SELECT ExitPointID FROM Exit WHERE PlaceID = ?''', (placeID,))
+            check = checkCur.fetchall()
+            con.close()
                 
-                for item in check:
-                    if item[0] == addExit:
-                        return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
-
-                if placeID == addExit:
+            for item in check:
+                if item[0] == addExit:
                     return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
 
-                con = open_DB("Database.db")
-                con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES
-                (?,?)''', (placeID, addExit))
-                con.commit()
-                con.close()
+            if placeID == addExit:
+                return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+            
+            con = open_DB("Database.db")
+            con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES (?,?)''', (placeID, addExit))
+            con.commit()
+            con.close()
 
-            if "image" in request.files:
-                image = request.files["image"]
-                image_path = image.filename
-    
-                con = open_DB("Database.db")
-                con.execute('''UPDATE Location SET Description = ?, Image = ? WHERE PlaceID =
-                        ?''', (desc, image_path, placeID))
-                con.commit()
-                con.close()
-            else:
-                con = open_DB("Database.db")
-                con.execute('''UPDATE Location SET Description = ?, Image = ? WHERE PlaceID =
-                        ?''', (desc, None, placeID))
-                con.commit()
-                con.close()
-                            
-            return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="")
+        if desc != "":
+            con = open_DB("Database.db")
+            con.execute('''UPDATE Location SET Description = ? WHERE PlaceID = ?''', (desc, placeID))
+            con.commit()
+            con.close()
 
-        else:
-            return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+        if image_path != "":
+            con = open_DB("Database.db")
+            con.execute('''UPDATE Location SET Image = ? WHERE PlaceID = ?''', (image_path, placeID))
+            con.commit()
+            con.close()
+            try:
+                image.save("static/images/"+image_path)
+            except:
+                return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+
+        return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="")
         
     return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="hidden")
 
