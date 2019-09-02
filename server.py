@@ -5,10 +5,12 @@ from flask import redirect
 import sqlite3
 import jinja2
 import hashlib
+import os.path
 
 app = Flask(__name__)
 def open_DB(db):
-    connection=sqlite3.connect(db)
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db)
+    connection = sqlite3.connect(db_path)
     connection.row_factory = sqlite3.Row
     return connection
 
