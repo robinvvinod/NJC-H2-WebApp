@@ -112,10 +112,6 @@ body {
     border-style: none;
 }
 
-.infoBox #select {
-    width: 100px;
-}
-
 .infoBox #container #failedMsg {
     color: red;
     font-family: "Verdana";

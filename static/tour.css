@@ -1,7 +1,7 @@
 body {
     background-image: url(images/njcbg.jpg);
-    background-repeat:no-repeat;
-    background-size:cover;
+    background-repeat: no-repeat;
+    background-size: cover;
     background-color: grey;
 }
 
@@ -49,9 +49,8 @@ body {
 	left: 0;
 	right: 0;
     width: 700px;
-    height: 425px;
-    background-color: #374787;
-    opacity: 0.8;
+    height: 750px;
+    background: rgba(55,71,135,0.8);
     border-radius: 4px;
 }
 
@@ -103,10 +102,14 @@ body {
     border-style: none;
 }
 
-#map {
+.mapouter {
     display: flex;
-    width: 300px;
-    height: 200px;
-    margin: auto;
-    padding-top: 15px;
+    justify-content: center;
+    align-items: center;
+    margin: 2em auto;
+}
+
+.gmap_canvas {
+    overflow: hidden;
+    background: none!important;
 }

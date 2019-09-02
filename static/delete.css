@@ -75,6 +75,9 @@ body {
 .infoBox form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
     width: 50%;
     margin: 0 auto;
     padding-top: 10px;
@@ -110,17 +113,6 @@ body {
     background-color: white;
     color: #F76C6C;
     border-style: none;
-}
-
-.infoBox #select {
-    width: 100px;
-}
-
-.infoBox #container #failedMsg {
-    color: red;
-    font-family: "Verdana";
-    font-size: 12px;
-    text-align: center;
 }
 
 .infoBox #container #successMsg {

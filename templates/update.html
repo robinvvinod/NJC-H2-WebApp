@@ -32,6 +32,9 @@
                     </select> 
                 </div>
                 <div id="formDiv">
+                    <input type="text" name="nameUpdate" placeholder="New Name">
+                </div>
+                <div id="formDiv">
                     <textarea name="description" cols="40" rows="5" placeholder="Location Description"></textarea>
                 </div>
                 <div id="formDiv">
@@ -39,13 +42,26 @@
                     <input type="file" name="image">
                 </div>
                 <div id="formDiv">
-                    <label>Exit Points: </label>
-                     <select name="exitPoint" id="select">
+                    <label>New Exit Point: </label>
+                     <select name="newExitPoint">
                          <option value="NULL">No new exit</option>
                          {% for exit in exits %}
                          <option value={{exit[0]}}>{{exit[1]}}</option>
                          {% endfor %}
                     </select> 
+                </div>
+                <div id="formDiv">
+                    <label>Remove Exit Point: </label>
+                     <select name="removeExitPoint">
+                         <option value="NULL">Do not remove</option>
+                         {% for exit in exits %}
+                         <option value={{exit[0]}}>{{exit[1]}}</option>
+                         {% endfor %}
+                    </select> 
+                </div>
+                <div id="formDiv">
+                    <label>Remove All Corresponding Exits (2-way)</label>
+                    <input type=checkbox name="twoway">
                 </div>
                 <div id="formDiv">
                     <button id="updateBtn" type="submit" accept="image/png, image/jpeg">Update</button>

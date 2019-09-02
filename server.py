@@ -78,9 +78,9 @@ def login():
 def selector():
     return render_template('selector.html')
 
-@app.route('/add', methods = ['POST','GET'])
-def add():
-    
+# Global Funcs for Add, Update & Delete
+
+def getExitList():
     exitList = []
     con = open_DB("Database.db")
     selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
@@ -90,6 +90,23 @@ def add():
     for exit in exitL:
         exitList.append([exit[0], exit[1]])
 
+    return exitList
+
+def getNameList():
+    nameList = []
+    con = open_DB("Database.db")
+    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
+    nameL = selectCur.fetchall()
+    con.close()
+
+    for name in nameL:
+        nameList.append([name[0], name[1]])
+
+    return nameList
+
+@app.route('/add', methods = ['POST','GET'])
+def add():
+    
     if "name" in request.form:
         name = request.form["name"]
         desc = request.form["description"]
@@ -108,7 +125,7 @@ def add():
                 try:
                     image.save("static/images/"+image_path)
                 except:
-                    return render_template('add.html', exits=exitList, failed="", success="hidden")
+                    return render_template('add.html', exits=getExitList(), failed="", success="hidden")
 
             else:
                 con = open_DB("Database.db")
@@ -119,43 +136,30 @@ def add():
                 
             if addExit != "NULL":
                 con = open_DB("Database.db")
-                con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES
-                (?,?)''', (newPlaceID, addExit))
+                if "twoway" in request.form:
+                    con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES (?,?)''', (newPlaceID, addExit))
+                    con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES (?,?)''', (addExit, newPlaceID))
+                else:
+                    con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES (?,?)''', (newPlaceID, addExit))
                 con.commit()
                 con.close()
 
-            return render_template('add.html', exits=exitList, failed="hidden", success="")
+            return render_template('add.html', exits=getExitList(), failed="hidden", success="")
 
         else:
-            return render_template('add.html', exits=exitList, failed="", success="hidden")
+            return render_template('add.html', exits=getExitList(), failed="", success="hidden")
         
-    return render_template('add.html', exits=exitList, failed="hidden", success="hidden")
+    return render_template('add.html', exits=getExitList(), failed="hidden", success="hidden")
 
 @app.route('/update', methods = ['POST','GET'])
 def update():
     
-    exitList = []
-    con = open_DB("Database.db")
-    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
-    exitL = selectCur.fetchall()
-    con.close()
-
-    nameList = []
-    con = open_DB("Database.db")
-    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
-    nameL = selectCur.fetchall()
-    con.close()
-
-    for exit in exitL:
-        exitList.append([exit[0], exit[1]])
-
-    for name in nameL:
-        nameList.append([name[0], name[1]])
-
     if "name" in request.form:
         placeID = request.form["name"]
+        newName = request.form["nameUpdate"]
         desc = request.form["description"]
-        addExit = request.form["exitPoint"]
+        addExit = request.form["newExitPoint"]
+        removeExit = request.form["removeExitPoint"]
         image = request.files["image"]
         image_path = image.filename
 
@@ -167,19 +171,41 @@ def update():
                 
             for item in check:
                 if item[0] == addExit:
-                    return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+                    return render_template('update.html', exits=getExitList(), names=getNameList(), failed="", success="hidden")
 
             if placeID == addExit:
-                return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+                return render_template('update.html', exits=getExitList(), names=getNameList(), failed="", success="hidden")
             
             con = open_DB("Database.db")
             con.execute('''INSERT INTO Exit (PlaceID, ExitPointID) VALUES (?,?)''', (placeID, addExit))
             con.commit()
             con.close()
 
-        if desc != "":
+        if removeExit != "NULL":
             con = open_DB("Database.db")
-            con.execute('''UPDATE Location SET Description = ? WHERE PlaceID = ?''', (desc, placeID))
+            checkCur = con.execute('''SELECT ExitPointID FROM Exit WHERE PlaceID = ?''', (placeID,))
+            check = checkCur.fetchall()
+            con.close()
+                
+            for item in check:
+                if item[0] == addExit:
+                    return render_template('update.html', exits=getExitList(), names=getNameList(), failed="", success="hidden")
+
+            if placeID == addExit:
+                return render_template('update.html', exits=getExitList(), names=getNameList(), failed="", success="hidden")
+            
+            con = open_DB("Database.db")
+            if "twoway" in request.form:
+                con.execute('''DELETE FROM Exit WHERE PlaceID = ? OR ExitPointID = ?''', (placeID,placeID))
+            else:
+                con.execute('''DELETE FROM Exit WHERE PlaceID = ?''', (placeID,))
+
+            con.commit()
+            con.close()
+
+        if desc != "" and newName != "":
+            con = open_DB("Database.db")
+            con.execute('''UPDATE Location SET Name = ?, Description = ? WHERE PlaceID = ?''', (newName, desc, placeID))
             con.commit()
             con.close()
 
@@ -191,24 +217,15 @@ def update():
             try:
                 image.save("static/images/"+image_path)
             except:
-                return render_template('update.html', exits=exitList, names=nameList, failed="", success="hidden")
+                pass
 
-        return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="")
+        return render_template('update.html', exits=getExitList(), names=getNameList(), failed="hidden", success="")
         
-    return render_template('update.html', exits=exitList, names=nameList, failed="hidden", success="hidden")
+    return render_template('update.html', exits=getExitList(), names=getNameList(), failed="hidden", success="hidden")
 
 @app.route('/delete', methods = ['POST','GET'])
 def delete():
-
-    nameList = []
-    con = open_DB("Database.db")
-    selectCur = con.execute('''SELECT PlaceID, Name FROM Location''')
-    nameL = selectCur.fetchall()
-    con.close()
-
-    for name in nameL:
-        nameList.append([name[0], name[1]])
-
+    
     if "name" in request.form:
         placeID = request.form["name"]
         con = open_DB("Database.db")
@@ -216,10 +233,10 @@ def delete():
         con.execute('''DELETE FROM Location WHERE PlaceID = ?''', (placeID,))
         con.commit()
         con.close()
+        
+        return render_template('delete.html', names=getNameList(), success="")
 
-        return redirect('/delete')
-
-    return render_template('delete.html', names=nameList)
+    return render_template('delete.html', names=getNameList(), success="hidden")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

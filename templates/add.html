@@ -35,12 +35,16 @@
                 </div>
                 <div id="formDiv">
                     <label>Exit Points: </label>
-                     <select name="exitPoint" id="select">
+                     <select name="exitPoint">
                          <option value="NULL">No Exit</option>
                          {% for exit in exits %}
                          <option value={{exit[0]}}>{{exit[1]}}</option>
                          {% endfor %}
                     </select> 
+                </div>
+                <div id="formDiv">
+                    <label>Add All Corresponding Exits (2-way)</label>
+                    <input type=checkbox name="twoway">
                 </div>
                 <div id="formDiv">
                     <button id="add" type="submit" accept="image/png, image/jpeg">Add</button>
