@@ -1,7 +1,7 @@
 body {
     background-image: url(images/njcbg.jpg);
-    background-repeat:no-repeat;
-    background-size:cover;
+    background-repeat: no-repeat;
+    background-size: cover;
     background-color: grey;
 }
 
@@ -42,60 +42,44 @@ body {
 }
 
 .infoBox {
-    margin: auto;
-    position: absolute;
-    top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-    width: 700px;
-    height: 250px;
-    background-color: #374787;
-    opacity: 0.8;
+    margin: 2em auto;
+    width: 900px;
+    min-height: 500px;
+    background: rgba(55,71,135,0.8);
     border-radius: 4px;
 }
 
-.infoBox #title {
-    text-align: center;
-    color: white;
-    font-family: "Verdana";
-    font-size: 21px;
-}
-
-.infoBox #subtext {
-    text-align: center;
-    color: white;
-    padding-top: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    font-family: "Verdana";
-    font-size: 14px;
-}
-
 .infoBox form {
+    width: inherit;
+    height: inherit;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.location {
+    margin: 15px;
+    width: 340px;
+    height: 230px;
+}
+
+.boundingBox {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    width: 50%;
-    margin: 0 auto;
-    padding-top: 10px;
-    color: white;
-    font-family: "Verdana";
-    font-size: 14px;
 }
 
-.infoBox #formDiv {
-    display: flex;
-    padding: 5px;
+.boundingBox img {
+    width: 340px;
+    height: 200px;
 }
 
-.infoBox #deleteBtn {
+.boundingBox #proceedBtn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: inherit;
     height: 30px;
     color: white;
     font-family: "Verdana";
@@ -103,21 +87,11 @@ body {
     text-align: center;
     background-color: #F76C6C;
     border: none;
-    margin: auto;
-    border-radius: 4px;
     text-decoration: none;
-    margin-top: 15px;
 }
 
-.infoBox #deleteBtn:hover {
+.boundingBox #proceedBtn:hover {
     background-color: white;
     color: #F76C6C;
     border-style: none;
-}
-
-.infoBox #container #successMsg {
-    color: green;
-    font-family: "Verdana";
-    font-size: 12px;
-    text-align: center;
 }

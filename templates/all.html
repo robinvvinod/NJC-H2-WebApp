@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NJC Navigator</title>
+    <link rel="stylesheet" href="../static/all.css" />
+</head>
+    
+<body>
+        
+    <div class="topNav">
+        <a href="/">Home</a>
+        <a class="active" href="/tour">Tour</a>
+        <a href="/login">Adminstration</a>
+        <img src="../static/images/njclogo.png" alt="NJC Logo">
+    </div>
+    
+    <div class="infoBox">
+        <form action="/tour-start" method="post">
+        {% for place in places %}
+            <div class="location">
+                <div class="boundingBox">
+                    <img src="../static/images/{{place[2]}}">    
+                    <input type="submit" name="{{place[0]}}" value="{{place[1]}}" id="proceedBtn"> 
+                </div>
+            </div>
+        {% endfor %}
+        </form>
+    </div>
+        
+</body>
